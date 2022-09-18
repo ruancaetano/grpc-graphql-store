@@ -17,23 +17,23 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	}
 }
 
-func (repository *UserRepository) InsertUser(name string, email string) (*pb.User, error) {
-	var id int
+func (repository *UserRepository) InsertUser(name string, email string, password string) (*pb.User, error) {
+	var id string
 
-	err := repository.db.QueryRow("INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id", name, email).Scan(&id)
+	err := repository.db.QueryRow("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id", name, email, password).Scan(&id)
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &pb.User{
-		Id:    int32(id),
+		Id:    id,
 		Name:  name,
 		Email: email,
 	}, nil
 }
 
-func (repository *UserRepository) GetUserById(id int32) (*pb.User, error) {
+func (repository *UserRepository) GetUserById(id string) (*pb.User, error) {
 	var (
 		name  string
 		email string
@@ -49,5 +49,26 @@ func (repository *UserRepository) GetUserById(id int32) (*pb.User, error) {
 		Id:    id,
 		Name:  name,
 		Email: email,
+	}, nil
+}
+
+func (repository *UserRepository) GetUserByEmail(email string) (*pb.User, error) {
+	var (
+		id       string
+		name     string
+		password string
+	)
+
+	err := repository.db.QueryRow("select id, name, password from users where email = $1;", email).Scan(&id, &name, &password)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.User{
+		Id:       id,
+		Name:     name,
+		Email:    email,
+		Password: password,
 	}, nil
 }
