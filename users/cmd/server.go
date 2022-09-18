@@ -8,12 +8,15 @@ import (
 	"net"
 
 	"github.com/joho/godotenv"
-	"github.com/ruancaetano/grpc-graphql-store/users/db"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
+
+	"github.com/ruancaetano/grpc-graphql-store/shared/db"
+
 	"github.com/ruancaetano/grpc-graphql-store/users/pb"
 	"github.com/ruancaetano/grpc-graphql-store/users/repositories"
 	"github.com/ruancaetano/grpc-graphql-store/users/services"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 )
 
 func main() {
