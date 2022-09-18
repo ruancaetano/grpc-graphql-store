@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"github.com/joho/godotenv"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
@@ -20,21 +20,21 @@ import (
 )
 
 func main() {
-	port := 8080
 	flag.Parse()
 
-	err := godotenv.Load()
+	err := godotenv.Load("./users/.env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", port))
+	port := os.Getenv("PORT")
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%s", port))
 
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	fmt.Printf("Listen port %d", port)
+	fmt.Printf("Listen port %s", port)
 
 	dbConnection := db.NewDbConnection()
 	defer dbConnection.Close()
