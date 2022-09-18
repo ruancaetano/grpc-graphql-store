@@ -6,7 +6,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/ruancaetano/grpc-graphql-store/users/pb"
+	pb "github.com/ruancaetano/grpc-graphql-store/users/pbusers"
 	"github.com/ruancaetano/grpc-graphql-store/users/repositories"
 )
 

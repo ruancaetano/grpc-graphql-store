@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	_ "github.com/lib/pq"
-	"github.com/ruancaetano/grpc-graphql-store/users/pb"
+	pb "github.com/ruancaetano/grpc-graphql-store/users/pbusers"
 )
 
 type UserRepository struct {
