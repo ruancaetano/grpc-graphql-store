@@ -1,0 +1,19 @@
+syntax = "proto3";
+package pbauth;
+
+option go_package = "./pbauth";
+
+
+message AuthenticationRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message AuthenticationResponse {
+    string token = 1;
+}
+
+
+service AuthService {
+    rpc Authenticate(AuthenticationRequest) returns (AuthenticationResponse);
+}

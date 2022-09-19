@@ -4,34 +4,34 @@ import (
 	"context"
 	"log"
 
-	"github.com/ruancaetano/grpc-graphql-store/users/pb"
+	pb "github.com/ruancaetano/grpc-graphql-store/users/pbusers"
 	"google.golang.org/grpc"
 )
 
 type UserServiceClient struct {
-	Conn *grpc.ClientConn
+	conn pb.UserServiceClient
 }
 
 func (client *UserServiceClient) CreateUser(ctx context.Context, in *pb.CreateUserRequest) (*pb.User, error) {
-	return client.CreateUser(ctx, in)
+	return client.conn.CreateUser(ctx, in)
 }
 
 func (client *UserServiceClient) GetUserById(ctx context.Context, in *pb.GetUserRequest) (*pb.User, error) {
-	return client.GetUserById(ctx, in)
+	return client.conn.GetUserById(ctx, in)
 }
 
 func (client *UserServiceClient) GetUserByCredentials(ctx context.Context, in *pb.GetUserByCredentialsRequest) (*pb.User, error) {
-	return client.GetUserByCredentials(ctx, in)
+	return client.conn.GetUserByCredentials(ctx, in)
 }
 
 func NewUserServiceClient(url string) *UserServiceClient {
-	connection, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+	connection, err := grpc.Dial(url, grpc.WithInsecure())
 
 	if err != nil {
 		log.Fatalf("Could not connect to gRPC Server %v", err)
 	}
 
 	return &UserServiceClient{
-		Conn: connection,
+		conn: pb.NewUserServiceClient(connection),
 	}
 }
