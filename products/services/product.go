@@ -13,12 +13,40 @@ type ProductService struct {
 	pb.UnimplementedProductServiceServer
 }
 
-func (service *ProductService) CreateProduct(contexts context.Context, request *pb.CreateProductRequest) (*pb.Product, error) {
-	return service.repository.CreateProduct(request)
+func NewProductService(repository *repositories.ProductRepository) *ProductService {
+	return &ProductService{
+		repository,
+		pb.UnimplementedProductServiceServer{},
+	}
 }
 
 func (service *ProductService) ListProducts(contexts context.Context, request *pb.PaginationParams) (*pb.ProductListResponse, error) {
 	return service.repository.ListProducts(request)
+}
+
+func (service *ProductService) GetProductById(contexts context.Context, request *pb.GetProductByIdRequest) (*pb.Product, error) {
+	return service.repository.GetProductById(request.GetId())
+}
+
+func (service *ProductService) ValidateProductAvailability(contexts context.Context, request *pb.ValidateProductAvailabilityRequest) (*pb.ValidateProductAvailabilityResponse, error) {
+	product, err := service.repository.GetProductById(request.GetId())
+	if err != nil {
+		return nil, err
+	}
+
+	available := product.GetAvailables() >= request.GetQuantity()
+
+	return &pb.ValidateProductAvailabilityResponse{
+		Available: available,
+	}, nil
+}
+
+func (service *ProductService) UpdateProductAvailablesValue(contexts context.Context, request *pb.UpdateProductAvailablesValueRequest) (*pb.Product, error) {
+	return service.repository.UpdateProductAvailablesValue(request)
+}
+
+func (service *ProductService) CreateProduct(contexts context.Context, request *pb.CreateProductRequest) (*pb.Product, error) {
+	return service.repository.CreateProduct(request)
 }
 
 func (service *ProductService) UpdateProduct(contexts context.Context, request *pb.UpdateProductRequest) (*pb.Product, error) {
@@ -27,11 +55,4 @@ func (service *ProductService) UpdateProduct(contexts context.Context, request *
 
 func (service *ProductService) DeleteProduct(contexts context.Context, request *pb.DeleteProductRequest) (*pb.DeleteProductResponse, error) {
 	return service.repository.DeleteProduct(request)
-}
-
-func NewProductService(repository *repositories.ProductRepository) *ProductService {
-	return &ProductService{
-		repository,
-		pb.UnimplementedProductServiceServer{},
-	}
 }

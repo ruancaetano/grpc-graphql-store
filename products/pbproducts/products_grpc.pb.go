@@ -26,6 +26,9 @@ type ProductServiceClient interface {
 	UpdateProduct(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*Product, error)
 	DeleteProduct(ctx context.Context, in *DeleteProductRequest, opts ...grpc.CallOption) (*DeleteProductResponse, error)
 	ListProducts(ctx context.Context, in *PaginationParams, opts ...grpc.CallOption) (*ProductListResponse, error)
+	GetProductById(ctx context.Context, in *GetProductByIdRequest, opts ...grpc.CallOption) (*Product, error)
+	ValidateProductAvailability(ctx context.Context, in *ValidateProductAvailabilityRequest, opts ...grpc.CallOption) (*ValidateProductAvailabilityResponse, error)
+	UpdateProductAvailablesValue(ctx context.Context, in *UpdateProductAvailablesValueRequest, opts ...grpc.CallOption) (*Product, error)
 }
 
 type productServiceClient struct {
@@ -72,6 +75,33 @@ func (c *productServiceClient) ListProducts(ctx context.Context, in *PaginationP
 	return out, nil
 }
 
+func (c *productServiceClient) GetProductById(ctx context.Context, in *GetProductByIdRequest, opts ...grpc.CallOption) (*Product, error) {
+	out := new(Product)
+	err := c.cc.Invoke(ctx, "/pbproducts.ProductService/GetProductById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productServiceClient) ValidateProductAvailability(ctx context.Context, in *ValidateProductAvailabilityRequest, opts ...grpc.CallOption) (*ValidateProductAvailabilityResponse, error) {
+	out := new(ValidateProductAvailabilityResponse)
+	err := c.cc.Invoke(ctx, "/pbproducts.ProductService/ValidateProductAvailability", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productServiceClient) UpdateProductAvailablesValue(ctx context.Context, in *UpdateProductAvailablesValueRequest, opts ...grpc.CallOption) (*Product, error) {
+	out := new(Product)
+	err := c.cc.Invoke(ctx, "/pbproducts.ProductService/UpdateProductAvailablesValue", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductServiceServer is the server API for ProductService service.
 // All implementations must embed UnimplementedProductServiceServer
 // for forward compatibility
@@ -80,6 +110,9 @@ type ProductServiceServer interface {
 	UpdateProduct(context.Context, *UpdateProductRequest) (*Product, error)
 	DeleteProduct(context.Context, *DeleteProductRequest) (*DeleteProductResponse, error)
 	ListProducts(context.Context, *PaginationParams) (*ProductListResponse, error)
+	GetProductById(context.Context, *GetProductByIdRequest) (*Product, error)
+	ValidateProductAvailability(context.Context, *ValidateProductAvailabilityRequest) (*ValidateProductAvailabilityResponse, error)
+	UpdateProductAvailablesValue(context.Context, *UpdateProductAvailablesValueRequest) (*Product, error)
 	mustEmbedUnimplementedProductServiceServer()
 }
 
@@ -98,6 +131,15 @@ func (UnimplementedProductServiceServer) DeleteProduct(context.Context, *DeleteP
 }
 func (UnimplementedProductServiceServer) ListProducts(context.Context, *PaginationParams) (*ProductListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProducts not implemented")
+}
+func (UnimplementedProductServiceServer) GetProductById(context.Context, *GetProductByIdRequest) (*Product, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProductById not implemented")
+}
+func (UnimplementedProductServiceServer) ValidateProductAvailability(context.Context, *ValidateProductAvailabilityRequest) (*ValidateProductAvailabilityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidateProductAvailability not implemented")
+}
+func (UnimplementedProductServiceServer) UpdateProductAvailablesValue(context.Context, *UpdateProductAvailablesValueRequest) (*Product, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProductAvailablesValue not implemented")
 }
 func (UnimplementedProductServiceServer) mustEmbedUnimplementedProductServiceServer() {}
 
@@ -184,6 +226,60 @@ func _ProductService_ListProducts_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProductService_GetProductById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProductByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).GetProductById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pbproducts.ProductService/GetProductById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).GetProductById(ctx, req.(*GetProductByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProductService_ValidateProductAvailability_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ValidateProductAvailabilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).ValidateProductAvailability(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pbproducts.ProductService/ValidateProductAvailability",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).ValidateProductAvailability(ctx, req.(*ValidateProductAvailabilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProductService_UpdateProductAvailablesValue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProductAvailablesValueRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).UpdateProductAvailablesValue(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pbproducts.ProductService/UpdateProductAvailablesValue",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).UpdateProductAvailablesValue(ctx, req.(*UpdateProductAvailablesValueRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProductService_ServiceDesc is the grpc.ServiceDesc for ProductService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +302,18 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListProducts",
 			Handler:    _ProductService_ListProducts_Handler,
+		},
+		{
+			MethodName: "GetProductById",
+			Handler:    _ProductService_GetProductById_Handler,
+		},
+		{
+			MethodName: "ValidateProductAvailability",
+			Handler:    _ProductService_ValidateProductAvailability_Handler,
+		},
+		{
+			MethodName: "UpdateProductAvailablesValue",
+			Handler:    _ProductService_UpdateProductAvailablesValue_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

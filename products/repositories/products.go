@@ -52,11 +52,10 @@ func (repository *ProductRepository) UpdateProduct(product *pb.UpdateProductRequ
 
 	_, err := repository.db.
 		Query(
-			"UPDATE products set updated_at = now(), title = $1, description = $2, thumb = $3, availables = $4 where id = $5",
+			"UPDATE products set updated_at = now(), title = $1, description = $2, thumb = $3, where id = $4",
 			product.GetTitle(),
 			product.GetDescription(),
 			product.GetThumb(),
-			product.GetAvailables(),
 			product.GetId(),
 		)
 	if err != nil {
@@ -70,8 +69,21 @@ func (repository *ProductRepository) UpdateProduct(product *pb.UpdateProductRequ
 		Title:       product.GetTitle(),
 		Description: product.GetDescription(),
 		Thumb:       product.GetThumb(),
-		Availables:  product.GetAvailables(),
 	}, nil
+}
+
+func (repository *ProductRepository) UpdateProductAvailablesValue(req *pb.UpdateProductAvailablesValueRequest) (*pb.Product, error) {
+	_, err := repository.db.
+		Query(
+			"UPDATE products set availables = availables + $1 where id = $2",
+			req.GetValueToAdd(),
+			req.GetId(),
+		)
+	if err != nil {
+		return nil, err
+	}
+
+	return repository.GetProductById(req.GetId())
 }
 
 func (repository *ProductRepository) DeleteProduct(product *pb.DeleteProductRequest) (*pb.DeleteProductResponse, error) {
@@ -135,5 +147,33 @@ func (repository *ProductRepository) ListProducts(pagination *pb.PaginationParam
 
 	return &pb.ProductListResponse{
 		Items: products,
+	}, nil
+}
+
+func (repository *ProductRepository) GetProductById(id string) (*pb.Product, error) {
+	query := `SELECT created_at, updated_at, title, thumb, description, availables FROM products where id = $1`
+
+	var (
+		created_at  string
+		updated_at  string
+		title       string
+		description string
+		thumb       string
+		availables  uint32
+	)
+
+	err := repository.db.QueryRow(query, id).Scan(&created_at, &updated_at, &title, &thumb, &description, &availables)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.Product{
+		Id:          id,
+		CreatedAt:   created_at,
+		UpdatedAt:   updated_at,
+		Title:       title,
+		Description: description,
+		Thumb:       thumb,
+		Availables:  availables,
 	}, nil
 }
