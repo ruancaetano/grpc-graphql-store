@@ -1,0 +1,58 @@
+syntax = "proto3";
+package pbproducts;
+
+option go_package = "./pbproducts";
+
+
+message Product {
+    string id = 1;
+    string created_at = 2;
+    string updated_at = 3;
+    bool is_active = 4;
+    string title = 5;
+    string description = 6;
+    string thumb = 7;
+    uint32 availables = 8;
+}
+
+// Requests
+message CreateProductRequest{
+    string title = 2;
+    string description = 3;
+    string thumb = 4;
+    uint32 availables = 5;
+}
+
+message UpdateProductRequest{
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    string thumb = 4;
+    uint32 availables = 5;
+}
+
+
+message DeleteProductRequest{
+    string id = 1;
+}
+
+message PaginationParams {
+    uint32 page = 1;
+    uint32 limit = 2;
+}
+
+// Responses
+message ProductListResponse {
+    repeated Product items = 1;
+}
+
+message DeleteProductResponse{
+    bool deleted = 1;
+}
+
+service ProductService {
+    rpc CreateProduct(CreateProductRequest) returns (Product);
+    rpc UpdateProduct(UpdateProductRequest) returns (Product);
+    rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse);
+    rpc ListProducts(PaginationParams) returns (ProductListResponse);
+}

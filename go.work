@@ -4,4 +4,5 @@ use (
 	./auth
 	./shared
 	./users
+	./products
 )
