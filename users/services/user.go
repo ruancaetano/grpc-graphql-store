@@ -59,9 +59,11 @@ func (service *UserService) GetUserByCredentials(contexts context.Context, reque
 	}
 
 	return &pb.User{
-		Id:    foundUser.GetId(),
-		Name:  foundUser.GetName(),
-		Email: foundUser.GetEmail(),
+		Id:        foundUser.GetId(),
+		Name:      foundUser.GetName(),
+		Email:     foundUser.GetEmail(),
+		CreatedAt: foundUser.GetCreatedAt(),
+		UpdatedAt: foundUser.GetUpdatedAt(),
 	}, nil
 }
 

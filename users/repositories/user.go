@@ -35,40 +35,56 @@ func (repository *UserRepository) InsertUser(name string, email string, password
 
 func (repository *UserRepository) GetUserById(id string) (*pb.User, error) {
 	var (
-		name  string
-		email string
+		name       string
+		email      string
+		created_at string
+		updated_at string
 	)
 
-	err := repository.db.QueryRow("select name, email from users where id = $1;", id).Scan(&name, &email)
+	err := repository.db.QueryRow(
+		"select name, email, created_at, updated_at from users where id = $1 and is_active = true;", id,
+	).Scan(
+		&name, &email, &created_at, &updated_at,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &pb.User{
-		Id:    id,
-		Name:  name,
-		Email: email,
+		Id:        id,
+		Name:      name,
+		Email:     email,
+		CreatedAt: created_at,
+		UpdatedAt: updated_at,
 	}, nil
 }
 
 func (repository *UserRepository) GetUserByEmail(email string) (*pb.User, error) {
 	var (
-		id       string
-		name     string
-		password string
+		id         string
+		name       string
+		password   string
+		created_at string
+		updated_at string
 	)
 
-	err := repository.db.QueryRow("select id, name, password from users where email = $1;", email).Scan(&id, &name, &password)
+	err := repository.db.QueryRow(
+		"select id, name, password, created_at, updated_at from users where email = $1 and is_active = true;", email,
+	).Scan(
+		&id, &name, &password, &created_at, &updated_at,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &pb.User{
-		Id:       id,
-		Name:     name,
-		Email:    email,
-		Password: password,
+		Id:        id,
+		Name:      name,
+		Email:     email,
+		Password:  password,
+		CreatedAt: created_at,
+		UpdatedAt: updated_at,
 	}, nil
 }
