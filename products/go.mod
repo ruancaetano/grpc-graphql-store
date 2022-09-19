@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.7
+	github.com/ruancaetano/grpc-graphql-store/shared v0.0.0-20220919160434-19804503d1e8
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
 )
