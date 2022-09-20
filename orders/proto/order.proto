@@ -1,0 +1,36 @@
+syntax = "proto3";
+package pborders;
+
+option go_package = "./pborders";
+
+message Order {
+    string id = 1;
+    string created_at = 2;
+    string updated_at = 3;
+    string product = 4;
+    string user = 5;
+    uint32 quantity = 6;
+}
+
+// Requests
+message CreateOrderRequest {
+    string product = 1;
+    string user = 2;
+    uint32 quantity = 3; 
+}
+
+message ListUserOrdersRequest {
+    string user = 1;
+}
+
+// Responses
+
+message ListUserOrdersResponse {
+    repeated Order items = 1;
+}
+
+
+service OrderService {
+    rpc CreateOrder(CreateOrderRequest) returns (Order);
+    rpc ListUserOrders(ListUserOrdersRequest) returns (ListUserOrdersResponse);
+}

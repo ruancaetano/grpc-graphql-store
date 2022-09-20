@@ -49,17 +49,17 @@ services:
     depends_on:
       - database
 
-  # orders:
-  #   build:
-  #     context: ./orders
-  #   command: sh -c "./wait && ./server"
-  #   container_name: store-orders-service
-  #   env_file: ./orders/.env
-  #   ports:
-  #     - 8003:8003
-  # environment:
-  #   WAIT_HOSTS: database:5432, users:8001, products:8002
-  #   depends_on:
-  #     - database
-  #     - products
-  #     - users
+  orders:
+    build:
+      context: ./orders
+    command: sh -c "./wait && ./server"
+    container_name: store-orders-service
+    env_file: ./orders/.env
+    ports:
+      - 8003:8003
+    environment:
+      WAIT_HOSTS: database:5432, users:8001, products:8002
+    depends_on:
+      - database
+      - products
+      - users
