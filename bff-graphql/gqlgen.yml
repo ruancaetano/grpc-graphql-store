@@ -50,6 +50,18 @@ autobind:
 # modelgen, the others will be allowed when binding to fields. Configure them to
 # your liking
 models:
+  User:
+    model:
+      - github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph/model.User
+
+  Product:
+    model: 
+      - github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph/model.Product
+
+  Order:
+    model: 
+      - github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph/model.Order
+      
   ID:
     model:
       - github.com/99designs/gqlgen/graphql.ID

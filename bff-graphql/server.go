@@ -24,6 +24,7 @@ func main() {
 	resolver := &graph.Resolver{
 		UserServiceClient:    clients.NewUserServiceClient(os.Getenv("USERS_SERVICE_URL")),
 		ProductServiceClient: clients.NewProductServiceClient(os.Getenv("PRODUCTS_SERVICE_URL")),
+		OrderServiceClient:   clients.NewOrderServiceClient(os.Getenv("ORDERS_SERVICE_URL")),
 	}
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolver}))

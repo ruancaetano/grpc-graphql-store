@@ -8,6 +8,7 @@ import (
 
 	"github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph/generated"
 	"github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph/model"
+	"github.com/ruancaetano/grpc-graphql-store/orders/pborders"
 	"github.com/ruancaetano/grpc-graphql-store/products/pbproducts"
 	"github.com/ruancaetano/grpc-graphql-store/users/pbusers"
 )
@@ -118,6 +119,56 @@ func (r *mutationResolver) UpdateProductAvailablesValue(ctx context.Context, inp
 	}, nil
 }
 
+// CreateOrder is the resolver for the createOrder field.
+func (r *mutationResolver) CreateOrder(ctx context.Context, input model.NewOrderInput) (*model.Order, error) {
+	order, err := r.OrderServiceClient.CreateOrder(ctx, &pborders.CreateOrderRequest{
+		User:     input.UserID,
+		Product:  input.ProductID,
+		Quantity: uint32(input.Quantity),
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := r.UserServiceClient.GetUserById(ctx, &pbusers.GetUserRequest{
+		Id: input.UserID,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	product, err := r.ProductServiceClient.GetProductById(ctx, &pbproducts.GetProductByIdRequest{
+		Id: input.ProductID,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.Order{
+		ID:        order.GetId(),
+		Quantity:  int(order.GetQuantity()),
+		CreatedAt: &order.CreatedAt,
+		User: &model.User{
+			ID:        user.GetId(),
+			Name:      user.GetName(),
+			Email:     user.GetEmail(),
+			CreatedAt: &user.CreatedAt,
+			UpdatedAt: &user.UpdatedAt,
+		},
+		Product: &model.Product{
+			ID:          product.GetId(),
+			Title:       product.GetTitle(),
+			Description: product.GetDescription(),
+			Thumb:       product.GetThumb(),
+			Availables:  int(product.GetAvailables()),
+			Price:       float64(product.GetPrice()),
+			CreatedAt:   &product.CreatedAt,
+			UpdatedAt:   &product.UpdatedAt,
+		},
+		UpdatedAt: &order.UpdatedAt,
+	}, nil
+}
+
 // User is the resolver for the user field.
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
 	user, err := r.Resolver.UserServiceClient.GetUserById(ctx, &pbusers.GetUserRequest{
@@ -183,6 +234,61 @@ func (r *queryResolver) Products(ctx context.Context, page int, limit int) ([]*m
 	}
 
 	return products, nil
+}
+
+// UserOrders is the resolver for the userOrders field.
+func (r *queryResolver) UserOrders(ctx context.Context, userID string) ([]*model.Order, error) {
+	response, err := r.Resolver.OrderServiceClient.ListUserOrders(ctx, &pborders.ListUserOrdersRequest{
+		User: userID,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	orders := []*model.Order{}
+
+	for _, order := range response.Items {
+
+		user, err := r.UserServiceClient.GetUserById(ctx, &pbusers.GetUserRequest{
+			Id: order.GetUser(),
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		product, err := r.ProductServiceClient.GetProductById(ctx, &pbproducts.GetProductByIdRequest{
+			Id: order.GetProduct(),
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		orders = append(orders, &model.Order{
+			ID:       order.GetId(),
+			Quantity: int(order.GetQuantity()),
+			User: &model.User{
+				ID:        user.GetId(),
+				Name:      user.GetName(),
+				Email:     user.GetEmail(),
+				CreatedAt: &user.CreatedAt,
+				UpdatedAt: &user.UpdatedAt,
+			},
+			Product: &model.Product{
+				ID:          product.GetId(),
+				Title:       product.GetTitle(),
+				Description: product.GetDescription(),
+				Thumb:       product.GetThumb(),
+				Availables:  int(product.GetAvailables()),
+				Price:       float64(product.GetPrice()),
+				CreatedAt:   &product.CreatedAt,
+				UpdatedAt:   &product.UpdatedAt,
+			},
+			CreatedAt: &order.CreatedAt,
+			UpdatedAt: &order.UpdatedAt,
+		})
+	}
+
+	return orders, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

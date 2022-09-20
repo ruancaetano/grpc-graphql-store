@@ -3,6 +3,10 @@
 # https://gqlgen.com/getting-started/
 
 # -- TYPES --
+type GenericResponse {
+  success: Boolean!
+}
+
 type User {
   id: ID!
   createdAt: String
@@ -22,17 +26,22 @@ type Product {
   price: Float!
 }
 
-
-type GenericResponse {
-  success: Boolean!
+type Order {
+  id: ID!
+  quantity: Int!
+  createdAt: String
+  updatedAt: String
+  user: User
+  product: Product
 }
 
 
 # -- QUERY -- 
 type Query {
-  user(id: String!): User!
-  product(id: String!): Product!
-  products(page: Int! = 1, limit: Int! = 10): [Product!]
+  user(id: String!): User
+  product(id: String!): Product
+  products(page: Int! = 1, limit: Int! = 10): [Product]
+  userOrders(userId: String!): [Order]
 }
 
 
@@ -68,6 +77,12 @@ input UpdateProductAvailablesInput {
   valueToAdd: Int!
 }
 
+input NewOrderInput {
+  userId: String!
+  productId: String!
+  quantity: Int!
+}
+
 # -- MUTATIONS --
 type Mutation {
   # user
@@ -77,4 +92,6 @@ type Mutation {
   updateProduct(input: UpdateProductInput!): Product!
   deleteProduct(input: DeleteProductInput!): GenericResponse!
   updateProductAvailablesValue(input: UpdateProductAvailablesInput!): Product!
+  # order
+  createOrder(input: NewOrderInput!): Order!
 }
