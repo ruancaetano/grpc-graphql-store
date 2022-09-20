@@ -1,0 +1,9 @@
+go 1.19
+
+use (
+	./auth
+	./orders
+	./products
+	./shared
+	./users
+)
