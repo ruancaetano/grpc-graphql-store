@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+
+  database:
+    build: 
+      context: ./db
+    container_name: store-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: development
+      POSTGRES_DB: grpc-graphql-store
+      PGDATA: /var/lib/postgres
+
+  auth:
+    build:
+      context: ./auth
+    container_name: store-auth-service
+    command: sh -c "./wait && ./server"
+    ports:
+      - 8000:8000
+    depends_on:
+      - users
+  
+  users:
+    build:
+      context: ./users
+    container_name: store-users-service
+    command: sh -c "./wait && ./server"
+    ports:
+      - 8001:8001
+    environment:
+      WAIT_HOSTS: database:5432
+    depends_on:
+      - database
+
+  products:
+    build:
+      context: ./products
+    command: sh -c "./wait && ./server"
+    container_name: store-products-service
+    ports:
+      - 8002:8002
+    environment:
+      WAIT_HOSTS: database:5432
+    depends_on:
+      - database
+
+  # orders:
+  #   build:
+  #     context: ./orders
+  #   command: sh -c "./wait && ./server"
+  #   container_name: store-orders-service
+  #   env_file: ./orders/.env
+  #   ports:
+  #     - 8003:8003
+  # environment:
+  #   WAIT_HOSTS: database:5432, users:8001, products:8002
+  #   depends_on:
+  #     - database
+  #     - products
+  #     - users

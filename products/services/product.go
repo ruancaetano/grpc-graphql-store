@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"errors"
 
 	pb "github.com/ruancaetano/grpc-graphql-store/products/pbproducts"
 
@@ -34,10 +35,12 @@ func (service *ProductService) ValidateProductAvailability(contexts context.Cont
 		return nil, err
 	}
 
-	available := product.GetAvailables() >= request.GetQuantity()
+	if request.GetQuantity() > product.GetAvailables() {
+		return nil, errors.New("Product quantity unavailable")
+	}
 
 	return &pb.ValidateProductAvailabilityResponse{
-		Available: available,
+		Available: true,
 	}, nil
 }
 

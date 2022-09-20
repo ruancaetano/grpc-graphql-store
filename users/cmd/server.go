@@ -22,14 +22,13 @@ import (
 func main() {
 	flag.Parse()
 
-	err := godotenv.Load("./users/.env")
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
 	port := os.Getenv("PORT")
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%s", port))
-
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -49,7 +48,6 @@ func main() {
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("Could not serve %v", err)
 	}
-
 }
 
 func makeUserService(dbConnection *sql.DB) *services.UserService {

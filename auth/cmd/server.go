@@ -17,17 +17,15 @@ import (
 )
 
 func main() {
-
 	flag.Parse()
 
-	err := godotenv.Load("./auth/.env")
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
 	port := os.Getenv("PORT")
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%s", port))
-
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
