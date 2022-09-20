@@ -6,4 +6,5 @@ use (
 	./products
 	./shared
 	./users
+	./bff-graphql
 )
