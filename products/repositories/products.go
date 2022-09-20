@@ -25,11 +25,12 @@ func (repository *ProductRepository) CreateProduct(product *pb.CreateProductRequ
 
 	err := repository.db.
 		QueryRow(
-			"INSERT INTO products (title, description, thumb, availables) VALUES ($1, $2, $3, $4) RETURNING id",
+			"INSERT INTO products (title, description, thumb, availables, price) VALUES ($1, $2, $3, $4, $5) RETURNING id",
 			product.GetTitle(),
 			product.GetDescription(),
 			product.GetThumb(),
 			product.GetAvailables(),
+			product.GetPrice(),
 		).
 		Scan(&id)
 	if err != nil {
@@ -44,6 +45,7 @@ func (repository *ProductRepository) CreateProduct(product *pb.CreateProductRequ
 		Description: product.GetDescription(),
 		Thumb:       product.GetThumb(),
 		Availables:  product.GetAvailables(),
+		Price:       product.GetPrice(),
 	}, nil
 }
 
@@ -52,10 +54,11 @@ func (repository *ProductRepository) UpdateProduct(product *pb.UpdateProductRequ
 
 	_, err := repository.db.
 		Query(
-			"UPDATE products set updated_at = now(), title = $1, description = $2, thumb = $3, where id = $4",
+			"UPDATE products set updated_at = now(), title = $1, description = $2, thumb = $3, price = $4 where id = $5",
 			product.GetTitle(),
 			product.GetDescription(),
 			product.GetThumb(),
+			product.GetPrice(),
 			product.GetId(),
 		)
 	if err != nil {
@@ -69,6 +72,7 @@ func (repository *ProductRepository) UpdateProduct(product *pb.UpdateProductRequ
 		Title:       product.GetTitle(),
 		Description: product.GetDescription(),
 		Thumb:       product.GetThumb(),
+		Price:       product.GetPrice(),
 	}, nil
 }
 
@@ -107,7 +111,7 @@ func (repository *ProductRepository) ListProducts(pagination *pb.PaginationParam
 
 	offset := limit * (page - 1)
 
-	query := `SELECT id, created_at, updated_at, title, thumb, description, availables FROM products ORDER BY "id" LIMIT $1 OFFSET $2`
+	query := `SELECT id, created_at, updated_at, title, thumb, description, availables, price FROM products ORDER BY "id" LIMIT $1 OFFSET $2`
 
 	rows, err := repository.db.Query(query, limit, offset)
 	if err != nil {
@@ -125,9 +129,10 @@ func (repository *ProductRepository) ListProducts(pagination *pb.PaginationParam
 			description string
 			thumb       string
 			availables  uint32
+			price       float32
 		)
 
-		err = rows.Scan(&id, &created_at, &updated_at, &title, &thumb, &description, &availables)
+		err = rows.Scan(&id, &created_at, &updated_at, &title, &thumb, &description, &availables, &price)
 
 		if err != nil {
 			return nil, err
@@ -141,6 +146,7 @@ func (repository *ProductRepository) ListProducts(pagination *pb.PaginationParam
 			Description: description,
 			Thumb:       thumb,
 			Availables:  availables,
+			Price:       price,
 		})
 
 	}
@@ -151,7 +157,7 @@ func (repository *ProductRepository) ListProducts(pagination *pb.PaginationParam
 }
 
 func (repository *ProductRepository) GetProductById(id string) (*pb.Product, error) {
-	query := `SELECT created_at, updated_at, title, thumb, description, availables FROM products where id = $1`
+	query := `SELECT created_at, updated_at, title, thumb, description, availables, price FROM products where id = $1`
 
 	var (
 		created_at  string
@@ -160,9 +166,10 @@ func (repository *ProductRepository) GetProductById(id string) (*pb.Product, err
 		description string
 		thumb       string
 		availables  uint32
+		price       float32
 	)
 
-	err := repository.db.QueryRow(query, id).Scan(&created_at, &updated_at, &title, &thumb, &description, &availables)
+	err := repository.db.QueryRow(query, id).Scan(&created_at, &updated_at, &title, &thumb, &description, &availables, &price)
 	if err != nil {
 		return nil, err
 	}
@@ -175,5 +182,6 @@ func (repository *ProductRepository) GetProductById(id string) (*pb.Product, err
 		Description: description,
 		Thumb:       thumb,
 		Availables:  availables,
+		Price:       price,
 	}, nil
 }

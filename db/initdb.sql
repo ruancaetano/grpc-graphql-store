@@ -33,7 +33,8 @@ CREATE TABLE products (
     title varchar(255) not null,
     description varchar(255) unique,
     thumb varchar(255),
-    availables int
+    availables int,
+    price float
 );
 
 INSERT INTO products (
@@ -41,13 +42,15 @@ INSERT INTO products (
     title,
     description,
     thumb,
-    availables
+    availables,
+    price
 ) VALUES (
     '481b107c-e3ac-47cf-b1e2-da6a88c0bc05'::uuid,
     'Camiseta bonita',
     'Camiseta muito bonita',
     'thumb.com/camisetabonita',
-    10
+    10,
+    100
 );
 
 
