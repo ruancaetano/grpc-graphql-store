@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/99designs/gqlgen v0.17.20
 	github.com/joho/godotenv v1.4.0
+	github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220919160434-19804503d1e8
 	github.com/ruancaetano/grpc-graphql-store/shared v0.0.0-20220920045044-787c677d051e
 	github.com/ruancaetano/grpc-graphql-store/users v0.0.0-20220920045044-787c677d051e
 	github.com/vektah/gqlparser/v2 v2.5.1
@@ -17,7 +18,6 @@ require (
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/mitchellh/mapstructure v1.3.1 // indirect
-	github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220919160434-19804503d1e8 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/urfave/cli/v2 v2.8.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect

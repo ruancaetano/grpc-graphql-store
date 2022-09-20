@@ -11,20 +11,70 @@ type User {
   email: String!
 }
 
+type Product {
+  id: ID!
+  createdAt: String
+  updatedAt: String
+  title: String!
+  description: String!
+  thumb: String!
+  availables: Int!
+  price: Float!
+}
+
+
+type GenericResponse {
+  success: Boolean!
+}
+
+
 # -- QUERY -- 
 type Query {
   user(id: String!): User!
+  product(id: String!): Product!
+  products(page: Int! = 1, limit: Int! = 10): [Product!]
 }
 
 
 # -- INPUTS --
-input NewUser {
+input NewUserInput {
   name: String!
   email: String!
   password: String!
 }
 
+input NewProductInput {
+  title: String!
+  description: String!
+  thumb: String!
+  availables: Int!
+  price: Float!
+}
+
+input UpdateProductInput {
+  ID: String!
+  title: String!
+  description: String!
+  thumb: String!
+  price: Float!
+}
+
+input DeleteProductInput {
+  ID: String!
+}
+
+input UpdateProductAvailablesInput {
+  ID: String!
+  valueToAdd: Int!
+}
+
 # -- MUTATIONS --
 type Mutation {
-  createUser(input: NewUser!): User!
+  # user
+  createUser(input: NewUserInput!): User!
+  # product
+  createProduct(input: NewProductInput!): Product!
+  updateProduct(input: UpdateProductInput!): Product!
+  deleteProduct(input: DeleteProductInput!): GenericResponse!
+  updateProductAvailablesValue(input: UpdateProductAvailablesInput!): Product!
 }

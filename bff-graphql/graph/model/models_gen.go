@@ -2,10 +2,50 @@
 
 package model
 
-type NewUser struct {
+type DeleteProductInput struct {
+	ID string `json:"ID"`
+}
+
+type GenericResponse struct {
+	Success bool `json:"success"`
+}
+
+type NewProductInput struct {
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Thumb       string  `json:"thumb"`
+	Availables  int     `json:"availables"`
+	Price       float64 `json:"price"`
+}
+
+type NewUserInput struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type Product struct {
+	ID          string  `json:"id"`
+	CreatedAt   *string `json:"createdAt"`
+	UpdatedAt   *string `json:"updatedAt"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Thumb       string  `json:"thumb"`
+	Availables  int     `json:"availables"`
+	Price       float64 `json:"price"`
+}
+
+type UpdateProductAvailablesInput struct {
+	ID         string `json:"ID"`
+	ValueToAdd int    `json:"valueToAdd"`
+}
+
+type UpdateProductInput struct {
+	ID          string  `json:"ID"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Thumb       string  `json:"thumb"`
+	Price       float64 `json:"price"`
 }
 
 type User struct {
