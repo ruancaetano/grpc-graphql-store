@@ -8,6 +8,7 @@ import (
 
 	"github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph/generated"
 	"github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph/model"
+
 	"github.com/ruancaetano/grpc-graphql-store/orders/pborders"
 	"github.com/ruancaetano/grpc-graphql-store/products/pbproducts"
 	"github.com/ruancaetano/grpc-graphql-store/users/pbusers"

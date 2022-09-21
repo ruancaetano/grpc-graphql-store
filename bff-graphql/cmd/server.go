@@ -5,12 +5,17 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/joho/godotenv"
+
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/joho/godotenv"
+
 	"github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph"
 	"github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph/generated"
-	"github.com/ruancaetano/grpc-graphql-store/shared/clients"
+
+	corders "github.com/ruancaetano/grpc-graphql-store/orders/clients"
+	cproducts "github.com/ruancaetano/grpc-graphql-store/products/clients"
+	cusers "github.com/ruancaetano/grpc-graphql-store/users/clients"
 )
 
 func main() {
@@ -22,9 +27,9 @@ func main() {
 	port := os.Getenv("PORT")
 
 	resolver := &graph.Resolver{
-		UserServiceClient:    clients.NewUserServiceClient(os.Getenv("USERS_SERVICE_URL")),
-		ProductServiceClient: clients.NewProductServiceClient(os.Getenv("PRODUCTS_SERVICE_URL")),
-		OrderServiceClient:   clients.NewOrderServiceClient(os.Getenv("ORDERS_SERVICE_URL")),
+		UserServiceClient:    cusers.NewUserServiceClient(os.Getenv("USERS_SERVICE_URL")),
+		ProductServiceClient: cproducts.NewProductServiceClient(os.Getenv("PRODUCTS_SERVICE_URL")),
+		OrderServiceClient:   corders.NewOrderServiceClient(os.Getenv("ORDERS_SERVICE_URL")),
 	}
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: resolver}))
