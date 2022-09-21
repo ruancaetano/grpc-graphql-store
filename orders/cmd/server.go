@@ -9,11 +9,12 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/ruancaetano/grpc-graphql-store/orders/db"
 	pb "github.com/ruancaetano/grpc-graphql-store/orders/pborders"
 	"github.com/ruancaetano/grpc-graphql-store/orders/repositories"
 	"github.com/ruancaetano/grpc-graphql-store/orders/services"
-	"github.com/ruancaetano/grpc-graphql-store/shared/clients"
-	"github.com/ruancaetano/grpc-graphql-store/shared/db"
+	cproducts "github.com/ruancaetano/grpc-graphql-store/products/clients"
+	cusers "github.com/ruancaetano/grpc-graphql-store/users/clients"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -52,8 +53,8 @@ func main() {
 func makeOrderService(dbConnection *sql.DB) *services.OrderService {
 	orderRepository := repositories.NewOrderRepository(dbConnection)
 
-	userService := clients.NewUserServiceClient(os.Getenv("USER_SERVICE_URL"))
-	productService := clients.NewProductServiceClient(os.Getenv("PRODUCT_SERVICE_URL"))
+	userService := cusers.NewUserServiceClient(os.Getenv("USER_SERVICE_URL"))
+	productService := cproducts.NewProductServiceClient(os.Getenv("PRODUCT_SERVICE_URL"))
 
 	return services.NewOrderService(orderRepository, productService, userService)
 }

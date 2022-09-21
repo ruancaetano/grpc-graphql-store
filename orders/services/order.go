@@ -8,21 +8,23 @@ import (
 	pbproducts "github.com/ruancaetano/grpc-graphql-store/products/pbproducts"
 	pbusers "github.com/ruancaetano/grpc-graphql-store/users/pbusers"
 
+	cproducts "github.com/ruancaetano/grpc-graphql-store/products/clients"
+	cusers "github.com/ruancaetano/grpc-graphql-store/users/clients"
+
 	"github.com/ruancaetano/grpc-graphql-store/orders/repositories"
-	"github.com/ruancaetano/grpc-graphql-store/shared/clients"
 )
 
 type OrderService struct {
 	pb.UnimplementedOrderServiceServer
 	repository     *repositories.OrderRepository
-	productService *clients.ProductServiceClient
-	userService    *clients.UserServiceClient
+	productService *cproducts.ProductServiceClient
+	userService    *cusers.UserServiceClient
 }
 
 // CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*Order, error)
 // 	ListUserOrders(ctx context.Context, in *ListUserOrdersRequest, opts ...grpc.CallOption) (*ListUserOrdersResponse, error)
 
-func NewOrderService(repository *repositories.OrderRepository, productService *clients.ProductServiceClient, userService *clients.UserServiceClient) *OrderService {
+func NewOrderService(repository *repositories.OrderRepository, productService *cproducts.ProductServiceClient, userService *cusers.UserServiceClient) *OrderService {
 	return &OrderService{
 		repository:     repository,
 		productService: productService,
