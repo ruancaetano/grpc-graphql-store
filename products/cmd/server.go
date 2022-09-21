@@ -9,9 +9,9 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/ruancaetano/grpc-graphql-store/products/db"
 	"github.com/ruancaetano/grpc-graphql-store/products/repositories"
 	"github.com/ruancaetano/grpc-graphql-store/products/services"
-	"github.com/ruancaetano/grpc-graphql-store/shared/db"
 
 	pb "github.com/ruancaetano/grpc-graphql-store/products/pbproducts"
 
