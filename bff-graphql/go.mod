@@ -5,8 +5,8 @@ go 1.19
 require (
 	github.com/99designs/gqlgen v0.17.20
 	github.com/joho/godotenv v1.4.0
-	github.com/ruancaetano/grpc-graphql-store/orders v0.0.0-20220920045044-787c677d051e
-	github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220919160434-19804503d1e8
+	github.com/ruancaetano/grpc-graphql-store/orders v0.0.0-20220920210254-55b75e7a97ec
+	github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220920210254-55b75e7a97ec
 	github.com/ruancaetano/grpc-graphql-store/shared v0.0.0-20220920045044-787c677d051e
 	github.com/ruancaetano/grpc-graphql-store/users v0.0.0-20220920045044-787c677d051e
 	github.com/vektah/gqlparser/v2 v2.5.1

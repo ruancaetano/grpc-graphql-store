@@ -40,10 +40,10 @@ github.com/mitchellh/mapstructure v1.3.1 h1:cCBH2gTD2K0OtLlv/Y5H01VQCqmlDxz30kS5
 github.com/mitchellh/mapstructure v1.3.1/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/ruancaetano/grpc-graphql-store/orders v0.0.0-20220920045044-787c677d051e h1:UZezwt/ofrQmXrSobz2+W7tywmlbvKjX8okmaJGS+eY=
-github.com/ruancaetano/grpc-graphql-store/orders v0.0.0-20220920045044-787c677d051e/go.mod h1:kSnPByPAf2JPGBKBCXQ6/Rgyhngp1kdlu5PrtwzR+J0=
-github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220919160434-19804503d1e8 h1:GFZE2o6UWMlH4hw/z7p4Gy9TuFFxFs2tzipMxL5t1eM=
-github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220919160434-19804503d1e8/go.mod h1:yFK1reVzjBlWPF3V/V/lqOsb8Ad0rRnaB9vJffO40gE=
+github.com/ruancaetano/grpc-graphql-store/orders v0.0.0-20220920210254-55b75e7a97ec h1:vuubXqh00HINManuMrv+8Uzv2AMfxCfs44gx/vzuwO4=
+github.com/ruancaetano/grpc-graphql-store/orders v0.0.0-20220920210254-55b75e7a97ec/go.mod h1:kSnPByPAf2JPGBKBCXQ6/Rgyhngp1kdlu5PrtwzR+J0=
+github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220920210254-55b75e7a97ec h1:UDma9HH6t0DiBjejpYxUF8ozYPXej6D0uVKRYOc9sLg=
+github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220920210254-55b75e7a97ec/go.mod h1:3ctBgJdYVKYHxuEgLcMHvCjsl/kBvdPzvNKGWsqNut0=
 github.com/ruancaetano/grpc-graphql-store/shared v0.0.0-20220920045044-787c677d051e h1:ualekxCPwAKN/yHJAa1XrruS5BoJ1gRzefoyTVljQDA=
 github.com/ruancaetano/grpc-graphql-store/shared v0.0.0-20220920045044-787c677d051e/go.mod h1:RmH/rOGr14otG2vHfSJWc7iGPtmxLmzkwHpFi6qEJvQ=
 github.com/ruancaetano/grpc-graphql-store/users v0.0.0-20220920045044-787c677d051e h1:/93yfVvCQ8+KEyOjtdGTXj2iy1vuFbC+Fr1UUZN1S/s=

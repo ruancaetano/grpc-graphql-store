@@ -63,3 +63,18 @@ services:
       - database
       - products
       - users
+
+  bff:
+    build:
+      context: ./bff-graphql
+    command: sh -c "./wait && ./server"
+    container_name: store-bff-service
+    env_file: ./bff-graphql/.env
+    ports:
+      - 8004:8004
+    environment:
+      WAIT_HOSTS: users:8001, products:8002, orders:8003
+    depends_on:
+      - users
+      - products
+      - orders
