@@ -7,12 +7,8 @@ github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/google/go-cmp v0.5.6 h1:BKbKCqvP6I+rmFHt06ZmyQtvB8xAkWdhFyr0ZUNZcxQ=
 github.com/joho/godotenv v1.4.0 h1:3l4+N6zfMWnkbPEXKng2o2/MR5mSwTrBih4ZEkkz1lg=
 github.com/joho/godotenv v1.4.0/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
-github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220919160434-19804503d1e8 h1:GFZE2o6UWMlH4hw/z7p4Gy9TuFFxFs2tzipMxL5t1eM=
-github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220919160434-19804503d1e8/go.mod h1:yFK1reVzjBlWPF3V/V/lqOsb8Ad0rRnaB9vJffO40gE=
-github.com/ruancaetano/grpc-graphql-store/shared v0.0.0-20220919164640-2e8773dd3177 h1:o0LqO+SXcbuTuVWHW1uksbKNjNFkC63fX127z+PXTm4=
-github.com/ruancaetano/grpc-graphql-store/shared v0.0.0-20220919164640-2e8773dd3177/go.mod h1:RmH/rOGr14otG2vHfSJWc7iGPtmxLmzkwHpFi6qEJvQ=
-github.com/ruancaetano/grpc-graphql-store/users v0.0.0-20220919164640-2e8773dd3177 h1:qWmkV0ZJiYW2WMth4p+XM9CknQO1kGBtrlfNMqHfiQg=
-github.com/ruancaetano/grpc-graphql-store/users v0.0.0-20220919164640-2e8773dd3177/go.mod h1:25QD0O3dRHXzk5yyf5z/ubZTFSViM00/J+0YVcgDLt0=
+github.com/ruancaetano/grpc-graphql-store/users v0.0.0-20220921041524-7df0f802b254 h1:Rm9nptCNye3vLSfqIRyg/s/GTlw/AEZJXFM+FXC+Wb8=
+github.com/ruancaetano/grpc-graphql-store/users v0.0.0-20220921041524-7df0f802b254/go.mod h1:BBBqwfa7CyiE+w/LQNRlVacH84wtk8nnhJ1/aBY25pY=
 golang.org/x/net v0.0.0-20220909164309-bea034e7d591 h1:D0B/7al0LLrVC8aWF4+oxpv/m8bc7ViFfVS8/gXGdqI=
 golang.org/x/net v0.0.0-20220909164309-bea034e7d591/go.mod h1:YDH+HFinaLZZlnHAfSS6ZXJJ9M9t4Dl22yv3iI2vPwk=
 golang.org/x/sys v0.0.0-20220915200043-7b5979e65e41 h1:ohgcoMbSofXygzo6AD2I1kz3BFmW1QArPYTtwEM3UXc=

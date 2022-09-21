@@ -34,6 +34,7 @@ services:
       - 8001:8001
     environment:
       WAIT_HOSTS: database:5432
+      WAIT_TIMEOUT: 60
     depends_on:
       - database
 
@@ -46,6 +47,7 @@ services:
       - 8002:8002
     environment:
       WAIT_HOSTS: database:5432
+      WAIT_TIMEOUT: 60
     depends_on:
       - database
 
@@ -54,11 +56,11 @@ services:
       context: ./orders
     command: sh -c "./wait && ./server"
     container_name: store-orders-service
-    env_file: ./orders/.env
     ports:
       - 8003:8003
     environment:
       WAIT_HOSTS: database:5432, users:8001, products:8002
+      WAIT_TIMEOUT: 60
     depends_on:
       - database
       - products
@@ -69,11 +71,11 @@ services:
       context: ./bff-graphql
     command: sh -c "./wait && ./server"
     container_name: store-bff-service
-    env_file: ./bff-graphql/.env
     ports:
       - 8004:8004
     environment:
       WAIT_HOSTS: users:8001, products:8002, orders:8003
+      WAIT_TIMEOUT: 60
     depends_on:
       - users
       - products
