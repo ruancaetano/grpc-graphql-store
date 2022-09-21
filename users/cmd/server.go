@@ -12,8 +12,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/ruancaetano/grpc-graphql-store/shared/db"
-
+	"github.com/ruancaetano/grpc-graphql-store/users/db"
 	pb "github.com/ruancaetano/grpc-graphql-store/users/pbusers"
 	"github.com/ruancaetano/grpc-graphql-store/users/repositories"
 	"github.com/ruancaetano/grpc-graphql-store/users/services"
