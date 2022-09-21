@@ -9,14 +9,17 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
+
 	"github.com/ruancaetano/grpc-graphql-store/orders/db"
 	pb "github.com/ruancaetano/grpc-graphql-store/orders/pborders"
 	"github.com/ruancaetano/grpc-graphql-store/orders/repositories"
 	"github.com/ruancaetano/grpc-graphql-store/orders/services"
+
 	cproducts "github.com/ruancaetano/grpc-graphql-store/products/clients"
 	cusers "github.com/ruancaetano/grpc-graphql-store/users/clients"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 )
 
 func main() {

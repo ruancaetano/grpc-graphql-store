@@ -4,8 +4,9 @@ import (
 	"context"
 	"log"
 
-	pb "github.com/ruancaetano/grpc-graphql-store/orders/pborders"
 	"google.golang.org/grpc"
+
+	pb "github.com/ruancaetano/grpc-graphql-store/orders/pborders"
 )
 
 type OrderServiceClient struct {
