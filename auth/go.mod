@@ -5,7 +5,6 @@ go 1.19
 require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/joho/godotenv v1.4.0
-	github.com/ruancaetano/grpc-graphql-store/shared v0.0.0-20220919164640-2e8773dd3177
 	github.com/ruancaetano/grpc-graphql-store/users v0.0.0-20220919164640-2e8773dd3177
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1

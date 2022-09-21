@@ -10,7 +10,7 @@ import (
 	"github.com/joho/godotenv"
 	pb "github.com/ruancaetano/grpc-graphql-store/auth/pbauth"
 	"github.com/ruancaetano/grpc-graphql-store/auth/services"
-	"github.com/ruancaetano/grpc-graphql-store/shared/clients"
+	"github.com/ruancaetano/grpc-graphql-store/users/clients"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

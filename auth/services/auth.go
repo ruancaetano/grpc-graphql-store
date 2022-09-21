@@ -7,9 +7,8 @@ import (
 
 	"github.com/golang-jwt/jwt"
 	pb "github.com/ruancaetano/grpc-graphql-store/auth/pbauth"
+	"github.com/ruancaetano/grpc-graphql-store/users/clients"
 	pbusers "github.com/ruancaetano/grpc-graphql-store/users/pbusers"
-
-	"github.com/ruancaetano/grpc-graphql-store/shared/clients"
 )
 
 type AuthService struct {
@@ -22,13 +21,11 @@ func (service *AuthService) Authenticate(ctx context.Context, req *pb.Authentica
 		Email:    req.GetEmail(),
 		Password: req.GetPassword(),
 	})
-
 	if err != nil {
 		return nil, err
 	}
 
 	token, err := generateToken(user)
-
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +50,6 @@ func generateToken(user *pbusers.User) (string, error) {
 }
 
 func NewAuthService(userServiceClient *clients.UserServiceClient) *AuthService {
-
 	return &AuthService{
 		userService: userServiceClient,
 	}
