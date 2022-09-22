@@ -11,10 +11,10 @@ import (
 )
 
 type JwtCustomClaims struct {
-	Id    string   `json:"id"`
-	Email string   `json:"email"`
-	Name  string   `json:"name"`
-	Roles []string `json:"roles"`
+	Id    string `json:"id"`
+	Email string `json:"email"`
+	Name  string `json:"name"`
+	Role  string `json:"role"`
 	jwt.StandardClaims
 }
 
@@ -27,7 +27,7 @@ func GenerateJwtUserToken(user *pbusers.User) (string, error) {
 		Id:    user.GetId(),
 		Email: user.GetEmail(),
 		Name:  user.GetName(),
-		Roles: []string{"user"},
+		Role:  user.GetRole(),
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expiresAt,
 		},
@@ -54,22 +54,9 @@ func ValidateJwt(token string, expectedRoles []string) (*JwtCustomClaims, error)
 		return nil, fmt.Errorf("failed to get claims")
 	}
 
-	if !parsedToken.Valid || !validateRoles(expectedRoles, claims.Roles) {
+	if !parsedToken.Valid || !slices.Contains(expectedRoles, claims.Role) {
 		return nil, fmt.Errorf("permission denied")
 	}
 
 	return claims, nil
-}
-
-func validateRoles(expectedRoles []string, rolesToValidate []string) bool {
-	foundRole := false
-
-	for _, role := range rolesToValidate {
-		if slices.Contains(expectedRoles, role) {
-			foundRole = true
-			break
-		}
-	}
-
-	return foundRole
 }

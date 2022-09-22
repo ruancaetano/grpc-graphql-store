@@ -1,5 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+CREATE TYPE users_roles_enum AS ENUM ('admin', 'user');
+
 -- Users
 CREATE TABLE users (
     id uuid primary key DEFAULT uuid_generate_v4 () ,
@@ -8,19 +10,28 @@ CREATE TABLE users (
     is_active boolean default TRUE,
     name varchar(255),
     email varchar(255) unique,
-    password varchar(255)
+    password varchar(255),
+    role users_roles_enum default 'user'::users_roles_enum
 );
 
 INSERT INTO users (
     id,
     name,
     email,
-    password
+    password,
+    role
 ) VALUES (
     'eceab8f4-ef4a-4775-a2c0-15d38afa6fd4'::uuid,
     'Ruan Caetano',
     'ruan@caetano.com',
-    '$2a$08$EjNMu7WjMQ05ej9mk7PbpublmbAkngADG0tApg9XEnTJggEieE5ju'
+    '$2a$08$EjNMu7WjMQ05ej9mk7PbpublmbAkngADG0tApg9XEnTJggEieE5ju',
+    'user'::users_roles_enum
+),(
+    'cc50b3d7-576a-40c7-9624-a224b38bdc63'::uuid,
+    'Ruan Admin',
+    'admin@admin.com',
+    '$2a$08$EjNMu7WjMQ05ej9mk7PbpublmbAkngADG0tApg9XEnTJggEieE5ju',
+    'admin'::users_roles_enum
 );
 
 
@@ -31,7 +42,7 @@ CREATE TABLE products (
     updated_at  TIMESTAMP WITH TIME ZONE default now(),
     is_active boolean default TRUE,
     title varchar(255) not null,
-    description varchar(255) unique,
+    description varchar(255),
     thumb varchar(255),
     availables int,
     price float

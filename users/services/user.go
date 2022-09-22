@@ -57,6 +57,7 @@ func (service *UserService) GetUserByCredentials(contexts context.Context, reque
 		Id:        foundUser.GetId(),
 		Name:      foundUser.GetName(),
 		Email:     foundUser.GetEmail(),
+		Role:      foundUser.GetRole(),
 		CreatedAt: foundUser.GetCreatedAt(),
 		UpdatedAt: foundUser.GetUpdatedAt(),
 	}, nil
