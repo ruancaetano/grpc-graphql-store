@@ -38,14 +38,14 @@ func main() {
 	dbConnection := db.NewDbConnection()
 	defer dbConnection.Close()
 
-	mappedAccessibleRoutes := map[string][]string{
+	mappedMethodsAndRoles := map[string][]string{
 		"/pbusers.UserService/CreateUser":           {"public"},
-		"/pbusers.UserService/GetUserById":          {"user"},
+		"/pbusers.UserService/GetUserById":          {"user", "admin"},
 		"/pbusers.UserService/GetUserByCredentials": {"public"},
 	}
 
 	opts := []grpc.ServerOption{
-		grpc.UnaryInterceptor(interceptors.UnaryAuthServerInterceptor(mappedAccessibleRoutes)),
+		grpc.UnaryInterceptor(interceptors.UnaryAuthServerInterceptor(mappedMethodsAndRoles)),
 	}
 	grpcServer := grpc.NewServer(opts...)
 

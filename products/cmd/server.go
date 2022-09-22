@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/ruancaetano/grpc-graphql-store/auth/interceptors"
 	"github.com/ruancaetano/grpc-graphql-store/products/db"
 	"github.com/ruancaetano/grpc-graphql-store/products/repositories"
 	"github.com/ruancaetano/grpc-graphql-store/products/services"
@@ -38,7 +39,19 @@ func main() {
 	dbConnection := db.NewDbConnection()
 	defer dbConnection.Close()
 
-	var opts []grpc.ServerOption
+	mappedMethodsAndRoles := map[string][]string{
+		"/pbproducts.ProductService/ListProducts":                 {"user", "admin"},
+		"/pbproducts.ProductService/GetProductById":               {"user", "admin"},
+		"/pbproducts.ProductService/ValidateProductAvailability":  {"user", "admin"},
+		"/pbproducts.ProductService/UpdateProductAvailablesValue": {"user", "admin"},
+		"/pbproducts.ProductService/CreateProduct":                {"admin"},
+		"/pbproducts.ProductService/UpdateProduct":                {"admin"},
+		"/pbproducts.ProductService/DeleteProduct":                {"admin"},
+	}
+
+	opts := []grpc.ServerOption{
+		grpc.UnaryInterceptor(interceptors.UnaryAuthServerInterceptor(mappedMethodsAndRoles)),
+	}
 	grpcServer := grpc.NewServer(opts...)
 
 	pb.RegisterProductServiceServer(grpcServer, makeProductService(dbConnection))
