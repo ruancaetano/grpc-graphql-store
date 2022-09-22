@@ -6,13 +6,28 @@ package graph
 import (
 	"context"
 
+	"github.com/ruancaetano/grpc-graphql-store/auth/pbauth"
 	"github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph/generated"
 	"github.com/ruancaetano/grpc-graphql-store/bff-graphql/graph/model"
-
 	"github.com/ruancaetano/grpc-graphql-store/orders/pborders"
 	"github.com/ruancaetano/grpc-graphql-store/products/pbproducts"
 	"github.com/ruancaetano/grpc-graphql-store/users/pbusers"
 )
+
+// SignIn is the resolver for the signIn field.
+func (r *mutationResolver) SignIn(ctx context.Context, input *model.SignInRequest) (*model.SignInResponse, error) {
+	response, err := r.AuthServiceClient.SignIn(ctx, &pbauth.SignInRequest{
+		Email:    input.Email,
+		Password: input.Password,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.SignInResponse{
+		Token: response.GetToken(),
+	}, nil
+}
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUserInput) (*model.User, error) {

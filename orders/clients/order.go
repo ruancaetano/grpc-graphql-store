@@ -5,7 +5,9 @@ import (
 	"log"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
+	"github.com/ruancaetano/grpc-graphql-store/auth/interceptors"
 	pb "github.com/ruancaetano/grpc-graphql-store/orders/pborders"
 )
 
@@ -22,7 +24,11 @@ func (client *OrderServiceClient) ListUserOrders(ctx context.Context, in *pb.Lis
 }
 
 func NewOrderServiceClient(url string) *OrderServiceClient {
-	connection, err := grpc.Dial(url, grpc.WithInsecure())
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithUnaryInterceptor(interceptors.UnaryAuthClientInterceptor()),
+	}
+	connection, err := grpc.Dial(url, opts...)
 	if err != nil {
 		log.Fatalf("Could not connect to gRPC Server %v", err)
 	}

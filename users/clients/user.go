@@ -4,8 +4,10 @@ import (
 	"context"
 	"log"
 
+	"github.com/ruancaetano/grpc-graphql-store/auth/interceptors"
 	pb "github.com/ruancaetano/grpc-graphql-store/users/pbusers"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type UserServiceClient struct {
@@ -25,7 +27,11 @@ func (client *UserServiceClient) GetUserByCredentials(ctx context.Context, in *p
 }
 
 func NewUserServiceClient(url string) *UserServiceClient {
-	connection, err := grpc.Dial(url, grpc.WithInsecure())
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithUnaryInterceptor(interceptors.UnaryAuthClientInterceptor()),
+	}
+	connection, err := grpc.Dial(url, opts...)
 	if err != nil {
 		log.Fatalf("Could not connect to gRPC Server %v", err)
 	}

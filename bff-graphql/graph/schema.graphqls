@@ -35,6 +35,10 @@ type Order {
   product: Product
 }
 
+type SignInResponse {
+  Token: String!
+}
+
 
 # -- QUERY -- 
 type Query {
@@ -46,6 +50,11 @@ type Query {
 
 
 # -- INPUTS --
+input SignInRequest {
+  email: String!
+  password: String!
+}
+
 input NewUserInput {
   name: String!
   email: String!
@@ -85,6 +94,8 @@ input NewOrderInput {
 
 # -- MUTATIONS --
 type Mutation {
+  # auth
+  signIn(input: SignInRequest): SignInResponse!
   # user
   createUser(input: NewUserInput!): User!
   # product
