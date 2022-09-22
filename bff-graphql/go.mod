@@ -6,10 +6,10 @@ require (
 	github.com/99designs/gqlgen v0.17.20
 	github.com/go-chi/chi v1.5.4
 	github.com/joho/godotenv v1.4.0
-	github.com/ruancaetano/grpc-graphql-store/auth v0.0.0-20220922215132-bed0e7b494ae
-	github.com/ruancaetano/grpc-graphql-store/orders v0.0.0-20220921041012-9bf8f741a56d
-	github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220921035449-3db8ea797083
-	github.com/ruancaetano/grpc-graphql-store/users v0.0.0-20220921041524-7df0f802b254
+	github.com/ruancaetano/grpc-graphql-store/auth v0.0.0-20220922230330-13bd2216bcd3
+	github.com/ruancaetano/grpc-graphql-store/orders v0.0.0-20220922230330-13bd2216bcd3
+	github.com/ruancaetano/grpc-graphql-store/products v0.0.0-20220922230330-13bd2216bcd3
+	github.com/ruancaetano/grpc-graphql-store/users v0.0.0-20220922230330-13bd2216bcd3
 	github.com/vektah/gqlparser/v2 v2.5.1
 	google.golang.org/grpc v1.49.0
 )
