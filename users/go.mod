@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.7
-	github.com/ruancaetano/grpc-graphql-store/auth v0.0.0-20220922215132-bed0e7b494ae
+	github.com/ruancaetano/grpc-graphql-store/auth v0.0.0-20220922230330-13bd2216bcd3
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
