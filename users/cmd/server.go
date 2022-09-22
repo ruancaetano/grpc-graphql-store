@@ -12,6 +12,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	"github.com/ruancaetano/grpc-graphql-store/auth/interceptors"
 	"github.com/ruancaetano/grpc-graphql-store/users/db"
 	pb "github.com/ruancaetano/grpc-graphql-store/users/pbusers"
 	"github.com/ruancaetano/grpc-graphql-store/users/repositories"
@@ -37,7 +38,15 @@ func main() {
 	dbConnection := db.NewDbConnection()
 	defer dbConnection.Close()
 
-	var opts []grpc.ServerOption
+	mappedAccessibleRoutes := map[string][]string{
+		"/pbusers.UserService/CreateUser":           {"public"},
+		"/pbusers.UserService/GetUserById":          {"user"},
+		"/pbusers.UserService/GetUserByCredentials": {"public"},
+	}
+
+	opts := []grpc.ServerOption{
+		grpc.UnaryInterceptor(interceptors.UnaryAuthServerInterceptor(mappedAccessibleRoutes)),
+	}
 	grpcServer := grpc.NewServer(opts...)
 
 	pb.RegisterUserServiceServer(grpcServer, makeUserService(dbConnection))
