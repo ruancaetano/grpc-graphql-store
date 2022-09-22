@@ -138,7 +138,6 @@ func (r *mutationResolver) UpdateProductAvailablesValue(ctx context.Context, inp
 // CreateOrder is the resolver for the createOrder field.
 func (r *mutationResolver) CreateOrder(ctx context.Context, input model.NewOrderInput) (*model.Order, error) {
 	order, err := r.OrderServiceClient.CreateOrder(ctx, &pborders.CreateOrderRequest{
-		User:     input.UserID,
 		Product:  input.ProductID,
 		Quantity: uint32(input.Quantity),
 	})
@@ -147,7 +146,7 @@ func (r *mutationResolver) CreateOrder(ctx context.Context, input model.NewOrder
 	}
 
 	user, err := r.UserServiceClient.GetUserById(ctx, &pbusers.GetUserRequest{
-		Id: input.UserID,
+		Id: order.GetUser(),
 	})
 	if err != nil {
 		return nil, err
@@ -253,10 +252,8 @@ func (r *queryResolver) Products(ctx context.Context, page int, limit int) ([]*m
 }
 
 // UserOrders is the resolver for the userOrders field.
-func (r *queryResolver) UserOrders(ctx context.Context, userID string) ([]*model.Order, error) {
-	response, err := r.Resolver.OrderServiceClient.ListUserOrders(ctx, &pborders.ListUserOrdersRequest{
-		User: userID,
-	})
+func (r *queryResolver) UserOrders(ctx context.Context) ([]*model.Order, error) {
+	response, err := r.Resolver.OrderServiceClient.ListUserOrders(ctx, &pborders.Empty{})
 	if err != nil {
 		return nil, err
 	}
@@ -266,7 +263,7 @@ func (r *queryResolver) UserOrders(ctx context.Context, userID string) ([]*model
 	for _, order := range response.Items {
 
 		user, err := r.UserServiceClient.GetUserById(ctx, &pbusers.GetUserRequest{
-			Id: order.GetUser(),
+			Id: order.User,
 		})
 		if err != nil {
 			return nil, err
@@ -313,7 +310,5 @@ func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResol
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
-type (
-	mutationResolver struct{ *Resolver }
-	queryResolver    struct{ *Resolver }
-)
+type mutationResolver struct{ *Resolver }
+type queryResolver struct{ *Resolver }

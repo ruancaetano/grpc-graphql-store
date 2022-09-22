@@ -45,7 +45,7 @@ type Query {
   user(id: String!): User
   product(id: String!): Product
   products(page: Int! = 1, limit: Int! = 10): [Product]
-  userOrders(userId: String!): [Order]
+  userOrders: [Order]
 }
 
 
@@ -87,7 +87,6 @@ input UpdateProductAvailablesInput {
 }
 
 input NewOrderInput {
-  userId: String!
   productId: String!
   quantity: Int!
 }

@@ -81,7 +81,7 @@ type ComplexityRoot struct {
 		Product    func(childComplexity int, id string) int
 		Products   func(childComplexity int, page int, limit int) int
 		User       func(childComplexity int, id string) int
-		UserOrders func(childComplexity int, userID string) int
+		UserOrders func(childComplexity int) int
 	}
 
 	SignInResponse struct {
@@ -110,7 +110,7 @@ type QueryResolver interface {
 	User(ctx context.Context, id string) (*model.User, error)
 	Product(ctx context.Context, id string) (*model.Product, error)
 	Products(ctx context.Context, page int, limit int) ([]*model.Product, error)
-	UserOrders(ctx context.Context, userID string) ([]*model.Order, error)
+	UserOrders(ctx context.Context) ([]*model.Order, error)
 }
 
 type executableSchema struct {
@@ -358,12 +358,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_userOrders_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.UserOrders(childComplexity, args["userId"].(string)), true
+		return e.complexity.Query.UserOrders(childComplexity), true
 
 	case "SignInResponse.Token":
 		if e.complexity.SignInResponse.Token == nil {
@@ -529,7 +524,7 @@ type Query {
   user(id: String!): User
   product(id: String!): Product
   products(page: Int! = 1, limit: Int! = 10): [Product]
-  userOrders(userId: String!): [Order]
+  userOrders: [Order]
 }
 
 
@@ -571,7 +566,6 @@ input UpdateProductAvailablesInput {
 }
 
 input NewOrderInput {
-  userId: String!
   productId: String!
   quantity: Int!
 }
@@ -754,21 +748,6 @@ func (ec *executionContext) field_Query_products_args(ctx context.Context, rawAr
 		}
 	}
 	args["limit"] = arg1
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_userOrders_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["userId"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
-		arg0, err = ec.unmarshalNString2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["userId"] = arg0
 	return args, nil
 }
 
@@ -2188,7 +2167,7 @@ func (ec *executionContext) _Query_userOrders(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().UserOrders(rctx, fc.Args["userId"].(string))
+		return ec.resolvers.Query().UserOrders(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2225,17 +2204,6 @@ func (ec *executionContext) fieldContext_Query_userOrders(ctx context.Context, f
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Order", field.Name)
 		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_userOrders_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return
 	}
 	return fc, nil
 }
@@ -4435,21 +4403,13 @@ func (ec *executionContext) unmarshalInputNewOrderInput(ctx context.Context, obj
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"userId", "productId", "quantity"}
+	fieldsInOrder := [...]string{"productId", "quantity"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "userId":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
-			it.UserID, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		case "productId":
 			var err error
 

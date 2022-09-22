@@ -11,7 +11,6 @@ type GenericResponse struct {
 }
 
 type NewOrderInput struct {
-	UserID    string `json:"userId"`
 	ProductID string `json:"productId"`
 	Quantity  int    `json:"quantity"`
 }

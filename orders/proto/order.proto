@@ -15,12 +15,7 @@ message Order {
 // Requests
 message CreateOrderRequest {
     string product = 1;
-    string user = 2;
     uint32 quantity = 3; 
-}
-
-message ListUserOrdersRequest {
-    string user = 1;
 }
 
 // Responses
@@ -29,8 +24,10 @@ message ListUserOrdersResponse {
     repeated Order items = 1;
 }
 
+message Empty {}
+
 
 service OrderService {
     rpc CreateOrder(CreateOrderRequest) returns (Order);
-    rpc ListUserOrders(ListUserOrdersRequest) returns (ListUserOrdersResponse);
+    rpc ListUserOrders(Empty) returns (ListUserOrdersResponse);
 }

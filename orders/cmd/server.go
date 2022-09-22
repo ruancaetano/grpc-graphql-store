@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	"github.com/ruancaetano/grpc-graphql-store/auth/interceptors"
 	"github.com/ruancaetano/grpc-graphql-store/orders/db"
 	pb "github.com/ruancaetano/grpc-graphql-store/orders/pborders"
 	"github.com/ruancaetano/grpc-graphql-store/orders/repositories"
@@ -41,7 +42,14 @@ func main() {
 	dbConnection := db.NewDbConnection()
 	defer dbConnection.Close()
 
-	var opts []grpc.ServerOption
+	mappedAccessibleRoutes := map[string][]string{
+		"/pborders.OrderService/CreateOrder":    {"user"},
+		"/pborders.OrderService/ListUserOrders": {"user"},
+	}
+
+	opts := []grpc.ServerOption{
+		grpc.UnaryInterceptor(interceptors.UnaryAuthServerInterceptor(mappedAccessibleRoutes)),
+	}
 	grpcServer := grpc.NewServer(opts...)
 
 	pb.RegisterOrderServiceServer(grpcServer, makeOrderService(dbConnection))

@@ -19,7 +19,7 @@ func (client *OrderServiceClient) CreateOrder(ctx context.Context, in *pb.Create
 	return client.conn.CreateOrder(ctx, in)
 }
 
-func (client *OrderServiceClient) ListUserOrders(ctx context.Context, in *pb.ListUserOrdersRequest) (*pb.ListUserOrdersResponse, error) {
+func (client *OrderServiceClient) ListUserOrders(ctx context.Context, in *pb.Empty) (*pb.ListUserOrdersResponse, error) {
 	return client.conn.ListUserOrders(ctx, in)
 }
 

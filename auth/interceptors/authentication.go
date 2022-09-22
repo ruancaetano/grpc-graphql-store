@@ -2,6 +2,7 @@ package interceptors
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/ruancaetano/grpc-graphql-store/auth/utils"
@@ -14,6 +15,7 @@ import (
 
 func UnaryAuthServerInterceptor(mappedRoutes map[string][]string) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+		fmt.Println(info.FullMethod)
 		if mappedRoutes[info.FullMethod] == nil {
 			return nil, status.Errorf(codes.Unimplemented, "this route authotization config was not mapped at server auth interceptor")
 		}
@@ -25,7 +27,7 @@ func UnaryAuthServerInterceptor(mappedRoutes map[string][]string) grpc.UnaryServ
 		// Get the metadata from the incoming context
 		md, ok := metadata.FromIncomingContext(ctx)
 		if !ok {
-			return nil, status.Errorf(codes.Unauthenticated, "couldn't parse incoming context metadata")
+			return nil, status.Errorf(codes.Unauthenticated, "Authorization metadata not found")
 		}
 
 		authenticationHeader := md.Get("authorization")
@@ -52,7 +54,7 @@ func UnaryAuthClientInterceptor() grpc.UnaryClientInterceptor {
 		// Get the metadata from the incoming context
 		md, ok := metadata.FromIncomingContext(ctx)
 		if !ok {
-			return status.Errorf(codes.Unauthenticated, "couldn't parse incoming context metadata sad")
+			return invoker(ctx, method, req, reply, cc, opts...)
 		}
 
 		authenticationHeader := md.Get("authorization")

@@ -19,13 +19,13 @@ func NewOrderRepository(db *sql.DB) *OrderRepository {
 	}
 }
 
-func (repository *OrderRepository) CreateOrder(order *pb.CreateOrderRequest) (*pb.Order, error) {
+func (repository *OrderRepository) CreateOrder(userId string, order *pb.CreateOrderRequest) (*pb.Order, error) {
 	var id string
 
 	err := repository.db.
 		QueryRow(
 			"INSERT INTO orders (user_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING id",
-			order.GetUser(),
+			userId,
 			order.GetProduct(),
 			order.GetQuantity(),
 		).
@@ -38,16 +38,16 @@ func (repository *OrderRepository) CreateOrder(order *pb.CreateOrderRequest) (*p
 		Id:        id,
 		CreatedAt: time.Now().UTC().String(),
 		UpdatedAt: time.Now().UTC().String(),
-		User:      order.GetUser(),
+		User:      userId,
 		Product:   order.GetProduct(),
 		Quantity:  order.GetQuantity(),
 	}, nil
 }
 
-func (repository *OrderRepository) ListUserOrders(request *pb.ListUserOrdersRequest) (*pb.ListUserOrdersResponse, error) {
+func (repository *OrderRepository) ListUserOrders(userId string) (*pb.ListUserOrdersResponse, error) {
 	query := `SELECT id, created_at, updated_at, user_id, product_id, quantity FROM orders where user_id = $1 ORDER BY "created_at" `
 
-	rows, err := repository.db.Query(query, request.GetUser())
+	rows, err := repository.db.Query(query, userId)
 	if err != nil {
 		return nil, err
 	}

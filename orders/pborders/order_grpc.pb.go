@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrderServiceClient interface {
 	CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*Order, error)
-	ListUserOrders(ctx context.Context, in *ListUserOrdersRequest, opts ...grpc.CallOption) (*ListUserOrdersResponse, error)
+	ListUserOrders(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListUserOrdersResponse, error)
 }
 
 type orderServiceClient struct {
@@ -43,7 +43,7 @@ func (c *orderServiceClient) CreateOrder(ctx context.Context, in *CreateOrderReq
 	return out, nil
 }
 
-func (c *orderServiceClient) ListUserOrders(ctx context.Context, in *ListUserOrdersRequest, opts ...grpc.CallOption) (*ListUserOrdersResponse, error) {
+func (c *orderServiceClient) ListUserOrders(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListUserOrdersResponse, error) {
 	out := new(ListUserOrdersResponse)
 	err := c.cc.Invoke(ctx, "/pborders.OrderService/ListUserOrders", in, out, opts...)
 	if err != nil {
@@ -57,7 +57,7 @@ func (c *orderServiceClient) ListUserOrders(ctx context.Context, in *ListUserOrd
 // for forward compatibility
 type OrderServiceServer interface {
 	CreateOrder(context.Context, *CreateOrderRequest) (*Order, error)
-	ListUserOrders(context.Context, *ListUserOrdersRequest) (*ListUserOrdersResponse, error)
+	ListUserOrders(context.Context, *Empty) (*ListUserOrdersResponse, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -68,7 +68,7 @@ type UnimplementedOrderServiceServer struct {
 func (UnimplementedOrderServiceServer) CreateOrder(context.Context, *CreateOrderRequest) (*Order, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrder not implemented")
 }
-func (UnimplementedOrderServiceServer) ListUserOrders(context.Context, *ListUserOrdersRequest) (*ListUserOrdersResponse, error) {
+func (UnimplementedOrderServiceServer) ListUserOrders(context.Context, *Empty) (*ListUserOrdersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUserOrders not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
@@ -103,7 +103,7 @@ func _OrderService_CreateOrder_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _OrderService_ListUserOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListUserOrdersRequest)
+	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func _OrderService_ListUserOrders_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: "/pborders.OrderService/ListUserOrders",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServiceServer).ListUserOrders(ctx, req.(*ListUserOrdersRequest))
+		return srv.(OrderServiceServer).ListUserOrders(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
