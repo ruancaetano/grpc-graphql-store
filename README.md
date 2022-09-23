@@ -1,28 +1,31 @@
 # gRPC + GraphQl + Go Store
 
-Esse projeto busca simular as funcionalidades básicas de uma loja online, contando com criação de usuários, autenticação e autorização, emissão de uma ordem de compra e gereciamento de produtos através de usuário admin.
+This project seeks to simulate the basic functionalities of an online store, with user creation, authentication and authorization, issuing a purchase order and managing products through the admin user.
 
-O objetivo principal foi explorar a linguagem go, aplicando gRPC como ferramenta de comunicação entre serviços, GraphQl para implementação de um bff, servindo então como porta de entrada da aplicação.
+The main objective was to explore the go language, applying [gRPC](https://grpc.io/) as a communication tool between services, [GraphQL](https://graphql.org/) to implement a [BFF](https://samnewman.io/patterns/architectural/bff/), serving as a gateway to the application.
 
-## Visão geral 
+## Overview
 
-O diagrama abaixo exemplifica como os serviços se comunicam quando o client realiza uma solicitação através do bff. A fim de explificar, imaginemos a emissão de uma ordem de compra enviada pelo client, o seguinte fluxo irá ocorrer:
+The diagram below exemplifies how services communicate when the client makes a request through bff. In order to explain, let's imagine issuing a purchase order sent by the client, the following flow will occur:
 
-1 - O servidor graphql irá se comunicar com o serviço de order através do client gRPC.
+1 - The GraphQL server will communicate with the order service through the gRPC client.
 
-2 - O token de autenticação será validado através do interceptor gGRPC
+2 - The authentication token will be validated through the gRPC interceptor
 
-3 - Após a validação do token, o serviço de order consulta o serviço de users e de products (gRPC) a fim de realizar algumas validações, exemplo, verificar se quantidade de produtos da order está disponível em estoque
+3 - After validating the token, the order service consults the users and products service (gRPC) in order to carry out some validations, for example, check if the quantity of products in the order is available in stock
 
-4 - Validações feitas, o client recebe sua resposta
+4 - Validations made, the client receives its response
 
+<p align="center">
 <img src="./docs/store.png" rel="Diagram" />
+</p>
 
-<sub>Algumas decisões como desacoplar totalmente os módulos, multíplos produtos por order, gerenciamento de secrets e alguns outros foram despriorizados para manter o foco nas tecnologias citadas.</sub>
 
-## Como brincar com isso?
+<sub>Some decisions such as fully decoupling modules, multiple products per order, secret management and some others were de-prioritized to keep the focus on the mentioned technologies.</sub>
 
-No seu terminal:
+## How to play with it?
+
+In your terminal:
 
 ```
 git clone git@github.com:ruancaetano/grpc-graphql-store.git
@@ -30,8 +33,8 @@ git clone git@github.com:ruancaetano/grpc-graphql-store.git
 docker compose up
 ```
 
-No seu browser acesse o GraphQl playground através da url `http://localhost:8004/`
+In your browser, access the GraphQL playground through the url `http://localhost:8004/`
 
-Dois usuários devem estar disponíveis 
-`ruan@caetano.com/test123` e
+Two users must be available
+`ruan@caetano.com/test123` and
 `admin@admin.com/teste123`
